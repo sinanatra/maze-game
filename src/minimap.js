@@ -42,12 +42,10 @@ export let MiniMap = function MiniMap (width, height, parent) {
                 x: x,
                 y: y
             };
-        } else if (id == 'J') {
-            this.ctx.fillStype = "yellow";
-        } else if (id == 'A') {
-            this.ctx.fillStyle = "blue";
+        }  else if (id == 'A') {
+            this.ctx.fillStyle = "white";
         } else {
-            this.ctx.fillStyle = "rgb(200, 200, 200)";
+            this.ctx.fillStyle = "black";
         }
 
         this.ctx.fillRect(x * 5, y * 5, 5, 5);

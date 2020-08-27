@@ -5,7 +5,8 @@
   "license": "MIT",
   "dependencies": {
     "file-loader": "^6.0.0",
-    "three": "^0.120.0"
+    "three": "^0.120.0",
+    "three-asciieffect": "^1.0.1"
   },
   "scripts": {
     "watch": "webpack-dev-server --mode development --watch",

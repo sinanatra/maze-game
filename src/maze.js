@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import AsciiEffect from 'three-asciieffect';
 import { LevelHelper, CameraHelper } from './helper.js';
 import { Input } from './inputs.js';
 import { MiniMap } from './minimap.js';
@@ -11,20 +12,31 @@ export function maze() {
     let input, miniMap, levelHelper, cameraHelper;
     let map = new Array();
     let running = true;
+    let ascii = ' ▁▂▃▄▅▆▇█';
+    // ascii = '|"“”‘’;:π*+•—-_,.';
 
     function initializeEngine() {
         renderer = new THREE.WebGLRenderer({
             antialias: true
         });
 
+        renderer = new AsciiEffect(renderer, ascii, { invert: false });
+
         renderer.setSize(width, height);
-        renderer.clear();
+        // renderer.clear();
+
 
         scene = new THREE.Scene();
         scene.fog = new THREE.Fog(0x777777, 0, 500);
 
         camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
         camera.position.y = 50;
+        camera.position.x = 180;
+
+        var light = new THREE.PointLight(0xffffff, 10);
+        light.position.set(500, 500, 500);
+        scene.add(light);
+
 
         document.getElementById("canvasContainer").appendChild(renderer.domElement);
 
@@ -41,8 +53,8 @@ export function maze() {
         messageContainer.style.backgroundColor = "white";
         messageContainer.style.border = "1px solid black";
 
-        let message = document.createElement("h1");
-        message.innerHTML = "Use Up / Down / Left / Right arrows or the virtual pad to move and rotate the camera";
+        let message = document.createElement("p");
+        message.innerHTML = "<b>Search for the exit! </b><br> Use W / A / S / D or the buttons to move around";
         message.style.textAlign = "center";
         message.style.color = "#000";
         message.style.padding = "15px";
@@ -56,7 +68,7 @@ export function maze() {
         let timer = setTimeout(function () {
             clearTimeout(timer);
             document.body.removeChild(messageContainer);
-        }, 3000);
+        }, 10000);
     }
 
     function initializeScene() {
@@ -156,6 +168,23 @@ export function maze() {
         } else if (input.keys.right || input.keys.d) {
             moveCamera("right");
         }
+          // Virtual pad
+          var params = {
+            rotation: 0.05,
+            translation: 5
+        };
+
+        if (input.joykeys.up) {
+            moveCamera("up", params);
+        } else if (input.joykeys.down) {
+            moveCamera("down", params);
+        }
+
+        if (input.joykeys.left) {
+            moveCamera("left", params);
+        } else if (input.joykeys.right) {
+            moveCamera("right", params);
+        }
     }
 
     function draw() {
@@ -246,14 +275,13 @@ export function maze() {
 
     function endScreen() {
         if (levelHelper.isFinished) {
-            alert("Good job, The game is over\n\nThanks you for playing!");
+            document.location.href = "mailto:hello@giacomonanni.info?body=I LOVE YOUUU";
             document.location.href = "/";
         } else {
             // Remove all childrens.
             for (let i = 0, l = scene.children.length; i < l; i++) {
                 scene.remove(scene.children[i]);
             }
-            renderer.clear();
             scene = new THREE.Scene();
             loadLevel(levelHelper.getNext());
             running = true;

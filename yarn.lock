@@ -5437,6 +5437,11 @@ terser@^4.1.2, terser@^4.6.3:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
+three-asciieffect@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/three-asciieffect/-/three-asciieffect-1.0.1.tgz#dcb93fb959f8f780fca331379cfeb95fc97077fd"
+  integrity sha1-3Lk/uVn494D8ozE3nP65X8lwd/0=
+
 three@^0.120.0:
   version "0.120.0"
   resolved "https://registry.yarnpkg.com/three/-/three-0.120.0.tgz#238ab7a9e5d92af6bab3d257ea2b1891c90aef63"
