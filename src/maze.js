@@ -27,13 +27,13 @@ export function maze() {
 
 
         scene = new THREE.Scene();
-        scene.fog = new THREE.Fog(0x777777, 0, 500);
+        scene.fog = new THREE.Fog(0x999999, 0, 500);
 
         camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
         camera.position.y = 50;
         camera.position.x = 180;
 
-        var light = new THREE.PointLight(0xffffff, 10);
+        var light = new THREE.PointLight(0xffffff, 2);
         light.position.set(500, 500, 500);
         scene.add(light);
 
