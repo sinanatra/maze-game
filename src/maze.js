@@ -1,18 +1,22 @@
 import * as THREE from 'three';
-import AsciiEffect from 'three-asciieffect';
+// import AsciiEffect from 'three-asciieffect';
 import { LevelHelper, CameraHelper } from './helper.js';
 import { Input } from './inputs.js';
 import { MiniMap } from './minimap.js';
+import { GrayScale } from './shader.js';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
 
 export function maze() {
     let width = window.innerWidth * 0.995;
     let height = window.innerHeight * 0.995;
     let canvasContainer = document.getElementById("canvasContainer");
-    let renderer, camera, scene;
+    let renderer, camera, scene, composer;
     let input, miniMap, levelHelper, cameraHelper;
     let map = new Array();
     let running = true;
-    let ascii = ' ▁▂▃▄▅▆▇█';
+    // let ascii = ' ▁▂▃▄▅▆▇█';
     // ascii = '|"“”‘’;:π*+•—-_,.';
 
     function initializeEngine() {
@@ -20,25 +24,31 @@ export function maze() {
             antialias: true
         });
 
-        renderer = new AsciiEffect(renderer, ascii, { invert: false });
+        // renderer = new AsciiEffect(renderer, ascii, { invert: false });
 
         renderer.setSize(width, height);
-        // renderer.clear();
-
+        renderer.clear();
 
         scene = new THREE.Scene();
-        scene.fog = new THREE.Fog(0x999999, 0, 500);
+        scene.fog = new THREE.Fog(0x999999, 0, 200);
 
         camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
         camera.position.y = 50;
         camera.position.x = 180;
 
-        var light = new THREE.PointLight(0xffffff, 2);
-        light.position.set(500, 500, 500);
-        scene.add(light);
+        var light = new THREE.AmbientLight( 0xffffff, 0.1);
+		scene.add(light);
 
-
+        
         document.getElementById("canvasContainer").appendChild(renderer.domElement);
+
+        composer = new EffectComposer(renderer);
+        composer.addPass(new RenderPass(scene, camera));
+        const customPass = new ShaderPass(GrayScale);
+
+        
+        customPass.renderToScreen = true;
+        composer.addPass(customPass);
 
         input = new Input();
         levelHelper = new LevelHelper();
@@ -189,6 +199,7 @@ export function maze() {
 
     function draw() {
         renderer.render(scene, camera);
+        composer.render();
     }
 
     function moveCamera(direction, delta) {

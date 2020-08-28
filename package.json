@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
+    "@johh/three-effectcomposer": "^0.1.0",
     "file-loader": "^6.0.0",
     "three": "^0.120.0",
     "three-asciieffect": "^1.0.1"
